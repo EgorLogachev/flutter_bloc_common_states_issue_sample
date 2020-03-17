@@ -6,6 +6,8 @@ import 'package:bloc_common_state_issue/flutter_bloc/screens/contacts/contacts_b
 import '../base_bloc.dart';
 import '../common_states.dart';
 
+enum ConnectionType {Chat, Call}
+
 mixin ConnectionBloc<Event, State> on BaseBloc<Event, State> {
   void startChat(Contact contact) {
     add(ChatConnectionEvent(contact) as Event);
@@ -16,30 +18,29 @@ mixin ConnectionBloc<Event, State> on BaseBloc<Event, State> {
   }
 
   Stream<State> _startCall(Contact contact) async* {
-    try {
-      yield* _startConnection(contact, (sessionId, contact) => CallConnectionState(sessionId, contact));
-    } on UnauthorizedError catch (e) {
-      yield UnauthorizedCallErrorState(repository, extraData: contact) as State;
-    }
+    yield* _startConnection(contact, ConnectionType.Call);
   }
 
   Stream<State> _startChat(Contact contact) async* {
-    try {
-      yield* _startConnection(contact, (sessionId, contact) => ChatConnectionState(sessionId, contact));
-    } on UnauthorizedError catch (e) {
-      yield UnauthorizedChatErrorState(repository, extraData: contact) as State;
-    }
-
+    yield* _startConnection(contact, ConnectionType.Chat);
   }
 
-  Stream<State> _startConnection(Contact contact, ConnectionState Function(int, Contact) stateCreator) async* {
+  Stream<State> _startConnection(Contact contact, ConnectionType type) async* {
     try {
       yield ProgressState() as State;
       int sessionId = await repository.fetchSession();
-      yield stateCreator(sessionId, contact) as State;
+      if (type == ConnectionType.Call) {
+        yield CallConnectionState(sessionId, contact) as State;
+      } else if (type == ConnectionType.Chat) {
+        yield ChatConnectionState(sessionId, contact) as State;
+      }
     } catch (e) {
       if (e is UnauthorizedError) {
-        throw e;
+        if (type == ConnectionType.Call) {
+          yield UnauthorizedCallErrorState(repository, extraData: contact) as State;
+        } else if (type == ConnectionType.Chat) {
+          yield UnauthorizedChatErrorState(repository, extraData: contact) as State;
+        }
       } else {
         yield mapErrorToState(e);
       }

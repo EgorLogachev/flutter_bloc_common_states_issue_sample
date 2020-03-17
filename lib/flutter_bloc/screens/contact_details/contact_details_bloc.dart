@@ -8,7 +8,7 @@ class ContactDetailsBloc extends BaseBloc<ContactDetailsEvent, ContactDetailsSta
   ContactDetailsBloc(Repository repository) : super(repository);
 
   @override
-  ContactDetailsState get initialState => null;
+  ContactDetailsState get initialState => ContactDetailsState();
 
   @override
   Stream<ContactDetailsState> mapEventToState(ContactDetailsEvent event) async* {

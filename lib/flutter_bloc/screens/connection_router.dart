@@ -14,23 +14,7 @@ class ConnectionRouter<State> extends ScreenRouter<State> {
       Navigator.of(context).push(CallConnectionScreen.route(state.contact));
     } else if (state is ChatConnectionState) {
       Navigator.of(context).push(ChatConnectionScreen.route(state.contact));
-    } else
-
-      /*if (state is UnauthorizedErrorState) {
-      final result = await Navigator.of(context).push(AuthScreen.route(state.repository, extraData: state.extraData));
-      final Map resultMap = result;
-      if (state is UnauthorizedContactsErrorState) {
-        final bloc = BlocProvider.of<ConnectionBloc>(context);
-      }
-
-      if (resultMap['type'] == ConnectionType.call) {
-        bloc.startCall(resultMap['contact']);
-      } else if (resultMap['type'] == ConnectionType.chat) {
-        bloc.startChat(resultMap['contact']);
-      }
-    } else*/
-
-      {
+    } else {
       super.onRoute(context, state);
     }
   }

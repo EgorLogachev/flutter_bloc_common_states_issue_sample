@@ -1,8 +1,10 @@
 import 'package:bloc_common_state_issue/data/repository.dart';
 import 'package:bloc_common_state_issue/flutter_bloc/common_states.dart';
+import 'package:bloc_common_state_issue/flutter_bloc/screens/auth/auth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../connection_bloc.dart';
 import '../connection_router.dart';
 import 'contact_details_bloc.dart';
 
@@ -19,8 +21,8 @@ class ContactDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (_) => ContactDetailsBloc(_repository),
-        child: BlocListener(
-          listener: ConnectionRouter().onRoute,
+        child: BlocListener<ContactDetailsBloc, ContactDetailsState>(
+          listener: _ContactDetailsRouter().onRoute,
           child: _ContactDetailsLayout(_contact),
         )
     );
@@ -98,5 +100,20 @@ class _ContactDetailsLayout extends StatelessWidget {
             })
           ],
         ));
+  }
+}
+
+class _ContactDetailsRouter extends ConnectionRouter<ContactDetailsState> {
+  @override
+  void onRoute(BuildContext context, ContactDetailsState state) async {
+    if (state is UnauthorizedChatErrorState) {
+      final result = await Navigator.of(context).push(AuthScreen.route(state.repository, extraData: state.extraData));
+      BlocProvider.of<ContactDetailsBloc>(context).startChat(result);
+    } else if (state is UnauthorizedCallErrorState) {
+      final result = await Navigator.of(context).push(AuthScreen.route(state.repository, extraData: state.extraData));
+      BlocProvider.of<ContactDetailsBloc>(context).startCall(result);
+    } else {
+      super.onRoute(context, state);
+    }
   }
 }
