@@ -3,7 +3,6 @@ import 'package:bloc_common_state_issue/flutter_bloc/screens/auth/auth_screen.da
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'main.dart';
 
 class ScreenRouter<State> = BaseRouter<State> with _CommonErrorsRouter<State>;
 

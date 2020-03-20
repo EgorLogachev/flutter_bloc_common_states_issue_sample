@@ -4,9 +4,11 @@ packages:
   alt_bloc:
     dependency: "direct main"
     description:
-      name: alt_bloc
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "7c42266"
+      resolved-ref: "7c422662e07052d7f8afc7f90a4c174c56202d94"
+      url: "https://github.com/dashdevs/alt_bloc"
+    source: git
     version: "0.1.2+3"
   archive:
     dependency: transitive

@@ -1,4 +1,5 @@
 import 'package:alt_bloc/alt_bloc.dart';
+import 'package:bloc_common_state_issue/alt_bloc/screens/connection_bloc.dart';
 import 'package:bloc_common_state_issue/alt_bloc/screens/connection_router.dart';
 import 'package:bloc_common_state_issue/alt_bloc/screens/contact_details/contact_details_screen.dart';
 import 'package:bloc_common_state_issue/alt_bloc/screens/contacts/contacts_bloc.dart';
@@ -17,7 +18,7 @@ class ContactsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<ContactsBloc>(
       child: _ContactsLayout(),
-      create: () => ContactsBloc(_repository),
+      create: () => ContactsBloc(_repository, ConnectionBloc(_repository)),
       router: ContactsRouter().onRoute,
     );
   }

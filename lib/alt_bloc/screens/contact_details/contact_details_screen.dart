@@ -1,10 +1,10 @@
 import 'package:alt_bloc/alt_bloc.dart';
+import 'package:bloc_common_state_issue/alt_bloc/screens/connection_bloc.dart';
 import 'package:bloc_common_state_issue/alt_bloc/screens/connection_router.dart';
 import 'package:bloc_common_state_issue/data/repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'contact_details_bloc.dart';
 
 class ContactDetailsScreen extends StatelessWidget {
   ContactDetailsScreen._(this._repository, this._contact);
@@ -19,7 +19,7 @@ class ContactDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       child: _ContactDetailsLayout(_contact),
-      create: () => ContactDetailsBloc(_repository),
+      create: () => ConnectionBloc(_repository),
       router: ConnectionRouter().onRoute,
     );
   }
@@ -72,7 +72,7 @@ class _ContactDetailsLayout extends StatelessWidget {
                               iconSize: 48.0,
                               icon: Icon(Icons.call),
                               color: Colors.white,
-                              onPressed: () => Provider.of<ContactDetailsBloc>(context).startCall(_contact)),
+                              onPressed: () => Provider.of<ConnectionBloc>(context).startCall(_contact)),
                         )),
                         Expanded(
                           child: Ink(
@@ -82,7 +82,7 @@ class _ContactDetailsLayout extends StatelessWidget {
                                 iconSize: 48.0,
                                 icon: Icon(Icons.chat),
                                 color: Colors.white,
-                                onPressed: () => Provider.of<ContactDetailsBloc>(context).startChat(_contact)),
+                                onPressed: () => Provider.of<ConnectionBloc>(context).startChat(_contact)),
                           ),
                         )
                       ],
@@ -91,7 +91,7 @@ class _ContactDetailsLayout extends StatelessWidget {
                 ],
               ),
             ),
-            BlocBuilder<ContactDetailsBloc, bool>(builder: (_, progress) {
+            BlocBuilder<ConnectionBloc, bool>(builder: (_, progress) {
               return progress ? Center(child: CircularProgressIndicator()) : Container();
             })
           ],

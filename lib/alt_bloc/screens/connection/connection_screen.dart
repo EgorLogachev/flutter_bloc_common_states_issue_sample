@@ -73,6 +73,7 @@ class _SplashIconState extends State<_SplashIcon> {
   static const _padding = 48.0;
 
   Timer _timer;
+  InkRipple _ripple;
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +102,7 @@ class _SplashIconState extends State<_SplashIcon> {
   }
 
   void _splash(BuildContext context) {
-    _createSplash(context).confirm();
+    (_ripple ??= _createSplash(context)).confirm();
   }
 
   @override
@@ -121,6 +122,7 @@ class _SplashIconState extends State<_SplashIcon> {
 
   @override
   void dispose() {
+    _ripple.dispose();
     _timer?.cancel();
     super.dispose();
   }

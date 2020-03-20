@@ -3,7 +3,9 @@ import 'package:bloc_common_state_issue/alt_bloc/common_states.dart';
 import 'package:bloc_common_state_issue/data/repository.dart';
 import 'package:bloc_common_state_issue/errors/errors.dart';
 
-mixin ConnectionBloc on BaseBloc {
+class ConnectionBloc extends BaseBloc {
+
+  ConnectionBloc(Repository repository) : super(repository);
 
   Future startCall(Contact contact) async {
     return _startConnection(contact, (sessionId, contact) => CallConnectionState(sessionId, contact));
